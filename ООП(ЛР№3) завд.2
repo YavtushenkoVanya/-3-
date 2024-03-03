@@ -1,0 +1,122 @@
+using System;
+using System.Windows.Forms;
+
+// Абстрактний базовий клас Number
+public abstract class Number
+{
+    // Віртуальний метод для додавання
+    public virtual Number Add(Number num)
+    {
+        return null; // Реалізація в похідних класах
+    }
+
+    // Віртуальний метод для віднімання
+    public virtual Number Subtract(Number num)
+    {
+        return null; // Реалізація в похідних класах
+    }
+
+    // Віртуальний метод для множення
+    public virtual Number Multiply(Number num)
+    {
+        return null; // Реалізація в похідних класах
+    }
+
+    // Віртуальний метод для ділення
+    public virtual Number Divide(Number num)
+    {
+        return null; // Реалізація в похідних класах
+    }
+
+    // Віртуальний метод для виводу значення
+    public abstract string Display();
+}
+
+// Похідний клас Integer
+public class Integer : Number
+{
+    private int value;
+
+    // Конструктор класу Integer
+    public Integer(int val)
+    {
+        value = val;
+    }
+
+    // Перевизначення методу додавання
+    public override Number Add(Number num)
+    {
+        if (num is Integer)
+        {
+            return new Integer(value + ((Integer)num).value);
+        }
+        else if (num is Real)
+        {
+            return new Real(value + ((Real)num).Value);
+        }
+
+        return null;
+    }
+
+    // Перевизначення методу виводу
+    public override string Display()
+    {
+        return $"Integer: {value}";
+    }
+}
+
+// Похідний клас Real
+public class Real : Number
+{
+    private double value;
+
+    // Властивість для доступу до значення
+    public double Value
+    {
+        get { return value; }
+    }
+
+    // Конструктор класу Real
+    public Real(double val)
+    {
+        value = val;
+    }
+
+    // Перевизначення методу виводу
+    public override string Display()
+    {
+        return $"Real: {value}";
+    }
+}
+
+// Форма для відображення результатів
+public class ResultForm : Form
+{
+    public ResultForm(string result)
+    {
+        TextBox textBox = new TextBox();
+        textBox.Text = result;
+        Controls.Add(textBox);
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        // Приклад використання класів
+        Integer integer1 = new Integer(5);
+        Integer integer2 = new Integer(10);
+        Real real1 = new Real(3.14);
+
+        Number result1 = integer1.Add(integer2);
+        Number result2 = integer1.Add(real1);
+
+        // Вивід результатів через форму
+        ResultForm resultForm1 = new ResultForm(result1.Display());
+        ResultForm resultForm2 = new ResultForm(result2.Display());
+
+        Application.Run(resultForm1);
+        Application.Run(resultForm2);
+    }
+}
